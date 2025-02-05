@@ -56,7 +56,7 @@ php artisan migrate --force
 ## Production Configuration
 
 1. Web Server:
-   - Use apache.conf for Apache
+   - Use nginx.conf for NGINX
    - Enable required modules
    - Configure SSL
 
@@ -81,23 +81,24 @@ php artisan migrate --force
 
 ## Monitoring
 
-- Error logging
-- Performance monitoring
-- Server metrics
-- Database monitoring
-- Queue monitoring
+1. Log Locations:
+   ```
+   /var/log/nginx/blog-access.log  # Access logs
+   /var/log/nginx/blog-error.log   # Error logs
+   /var/www/blog/storage/logs/     # Laravel logs
+   ```
 
-## Backup Strategy
+2. Health Checks:
+   ```bash
+   # Check NGINX status
+   sudo systemctl status nginx
 
-1. Database:
-   - Daily full backups
-   - Hourly incremental
-   - Off-site storage
+   # Check PHP-FPM status
+   sudo systemctl status php8.2-fpm
 
-2. Files:
-   - Regular backups
-   - Version control
-   - Disaster recovery
+   # Test NGINX config
+   sudo nginx -t
+   ```
 
 ## Maintenance
 
@@ -119,21 +120,6 @@ php artisan migrate --force
 - Cache configuration
 - Queue workers
 - Load balancing
-
-## Emergency Procedures
-
-1. Rollback:
-```bash
-git checkout production^1
-./deploy.sh
-```
-
-2. Quick fixes:
-```bash
-php artisan down
-# Apply fix
-php artisan up
-```
 
 ## Branch Information
 
